@@ -1,6 +1,7 @@
 window.addEventListener('load', function() {
 function $(id) { return document.getElementById(id) }
 function xy(obj) { return { x: obj.x, y: obj.y } }
+function oeach(obj, f) { Object.keys(obj).forEach(function(k){ f(k, obj[k])}) }
 function omap(obj, f) { return Object.keys(obj).map(function(k){ return f(k, obj[k]) }) }
 var markedOptions = { gfm: true, smartypants: true }
 window.X = {} // exports for debugging
@@ -44,12 +45,13 @@ function draw(data, where) {
     function degrees(radians){ return radians / Math.PI * 180 - 90 }
 
     var size = { x: where.clientWidth, y: where.clientHeight },
-        innerRadius = 20,
-        trackStickOut = 12,
-        outerRadius = Math.min(size.x, size.y)/2 - trackStickOut,
-        itemradius = 7
+        innerRadius = 18,
+        border = 18,
+        trackLabelSpace = 40,
+        outerRadius = Math.min(size.x, size.y)/2 - border,
+        itemradius = 6
     var angle = d3.scale.ordinal().domain(d3.range(data.tracks.length+1)).rangePoints([0, 2 * Math.PI]),
-        radius = d3.scale.linear().range([innerRadius, outerRadius])
+        radius = d3.scale.linear().range([outerRadius, innerRadius+trackLabelSpace])
 
     var svg = d3.select(where).append("svg")
         .attr("width", size.x)
@@ -57,24 +59,21 @@ function draw(data, where) {
         .append("g")
             .attr("transform", "translate(" + size.x / 2 + "," + size.y / 2 + ")")
 
-    var markers = [ { name: 'arrow', path: 'M 0,0 m -1,-1 L 1,0 L -1,1 Z', viewbox: '-1 -1 2 2', refX: 1 } ],
-        gradients = [] // TODO
-
-    svg.append("defs")
-        .selectAll("marker")
-            .data(markers)
-            .enter()
-            .append("svg:marker")
-                .attr("id", function(d){ return 'marker-'+d.name })
-                .attr('markerHeight', 3)
-                .attr('markerWidth', 4)
-                .attr('markerUnits', 'strokeWidth')
-                .attr('orient', 'auto')
-                .attr('refX', function(d){ return d.refX })
-                .attr('refY', 0)
-                .attr('viewBox', function(d){ return d.viewbox })
-                .append('svg:path')
-                    .attr('d', function(d){ return d.path })
+    var done_y = data.tracks.map(function(t){ return { x: t.x, y: -0.1 } })
+    oeach(data.items, function(_, itm) {
+        if (itm.data && itm.data.done) done_y[itm.x].y = Math.max(done_y[itm.x].y, itm.y)
+    })
+    done_arcs = done_y.map(function(_, i) { return { source: done_y[i], target: done_y[(i+1)%done_y.length] } })
+    X.done_arcs = done_arcs
+    svg.selectAll(".done-arc")
+        .data(done_arcs)
+        .enter().append("path")
+            .attr("class", "done-arc")
+            .attr("d", d3.hive.link()
+                .angle(function(d) { return angle(d.x) })
+                .startRadius(function(d) { return radius(d.y+.02) })
+                .endRadius(radius(1.3)))
+                //.endRadius(function(d){ return radius(d.y) }))
 
     svg.selectAll(".track")
         .data(data.tracks)
@@ -84,7 +83,16 @@ function draw(data, where) {
             .attr("id", function(d){ return d.id })
             .attr("transform", function(d){ return "rotate(" + degrees(angle(d.x)) + ")" })
             .attr("x1", radius.range()[0])
-            .attr("x2", radius.range()[1]+trackStickOut)
+            .attr("x2", radius.range()[1]-trackLabelSpace)
+
+    svg.selectAll(".track-labels")
+        .data(data.tracks)
+        .enter().append("text")
+            .attr("dx", 19)
+            .attr("dy", "0.35em")
+            .attr("text-anchor", "right")
+            .attr("transform", function(d){ return "rotate("+degrees(angle(d.x))+")" })
+            .text(function(d) { return d.name.toUpperCase() })
 
     svg.selectAll(".link")
         .data(data.links)
@@ -95,11 +103,11 @@ function draw(data, where) {
                 .angle(function(d) { return angle(data.items[d].x); })
                 .radius(function(d) { return radius(data.items[d].y); }))
 
-    var itemdata = omap(data.items, function(_, v) { return { x: v.x, y: 1 - v.y, id: v.id, name: v.name } })
+    var itemdata = omap(data.items, function(_, v) { return { x: v.x, y: v.y, id: v.id, name: v.name, done: v.data && v.data.done } })
     svg.selectAll(".item")
         .data(itemdata)
         .enter().append("circle")
-            .attr("class", "item")
+            .attr("class", function(d){ return "item"+(d.done ? " done" : "") })
             .attr("name", function(d) { return d.name })
             .attr("id", function(d) { return d.id })
             .attr("transform", function(d) { return "rotate(" + degrees(angle(d.x)) + ")"; })
@@ -109,15 +117,15 @@ function draw(data, where) {
     svg.selectAll(".item-labels")
         .data(itemdata)
         .enter().append("text")
-            .attr("x", 0)
-            .attr("y", 0)
+            .attr("dx", itemradius+3)
+            .attr("dy", itemradius/2)
             .attr("transform", function(d) {
                 return "rotate("+degrees(angle(d.x))+") "+
                        "translate("+radius(d.y)+") "+
                        "rotate("+(-1)*degrees(angle(d.x)+.2)+")"
                        
             })
-            .text(function(d) { return d.name })
+            .text(function(d) { return d.name.toUpperCase() })
 
     if (data.meta.favicon) {
         svg.append("image")
@@ -130,10 +138,15 @@ function draw(data, where) {
 }
 
 function parseWhat(item) {
-    t = [item.name]
+    t = ['<span class="info-name">'+item.name+'</span>']
     if (typeof item.data == 'string') t.push(marked(item.data, markedOptions))
-    else if (item.data) t.push(marked(item.data.what, markedOptions))
-    return t.join(': ')
+    else if (item.data) {
+        t.push(marked(item.data.what, markedOptions))
+        oeach(item.data, function(k, v) {
+            if (k != 'what' && k != 'depends') t.push(k+': '+v)
+        })
+    }
+    return t.join('<br>')
 }
 
 function setupActiveInfo(where, items, infobox) {
@@ -150,7 +163,7 @@ function setupActiveInfo(where, items, infobox) {
         Object.keys(handlers).forEach(function(classname) {
             if (e.target.classList.contains(classname)) text = handlers[classname](e, e.target)
         })
-        infobox.innerHTML = text ? 'TODO; '+text : ''
+        infobox.innerHTML = text ? text : ''
     })
 }
 

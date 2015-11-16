@@ -1,29 +1,69 @@
+html, body, #content { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+
+#sidebar {
+    background: #073642;
+    position: absolute;
+    height: 100%;
+    width: 28em;
+    padding: 0 2em;
+    box-shadow: 0 5px 5px #000;
+}
+#content {
+    margin-left: 32em;
+    background: url(bgpat.gif) repeat;
+}
+
+html {
+    font: 12px 'Droid Sans', sans-serif;
+    color: #93a1a1;
+}
+svg text {
+    font-size: 9px;
+    fill: #93a1a1;
+}
+
 svg {
-    background: #002b36;
+    background: url(chaos.gif) bottom right no-repeat;
 }
 
 .link {
   fill: none;
   stroke: #586e75;
-  stroke-width: 3.5px;
-}
-svg marker {
-    fill: #586e75;
+  stroke-width: 2px;
 }
 
 .track {
-  stroke: #586e75;
-  stroke-width: 5.5px;
+  stroke: #073642;
+  stroke-width: 9.5px;
+}
+
+.done-arc {
+    fill: #002b36;
 }
 
 .track.active,
 .link.active {
-    stroke: #93a1a1;
+    stroke: #859900;
 }
 
 .item {
-    fill: #268bd2;
+    fill: #002b36;
+    stroke: #268bd2;
+    stroke-width: 4px;
+}
+.item.done {
+    fill: #93a1a1;
+    stroke: #93a1a1;
 }
 .item.active {
-    fill: #859900;
+    fill: #dc322f;
+    stroke: #dc322f;
+}
+
+header blockquote {
+    margin: 20px;
+    font-style: italic;
+}
+.info-name {
+    color: #859900;
 }
