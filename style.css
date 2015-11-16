@@ -1,0 +1,29 @@
+svg {
+    background: #002b36;
+}
+
+.link {
+  fill: none;
+  stroke: #586e75;
+  stroke-width: 3.5px;
+}
+svg marker {
+    fill: #586e75;
+}
+
+.track {
+  stroke: #586e75;
+  stroke-width: 5.5px;
+}
+
+.track.active,
+.link.active {
+    stroke: #93a1a1;
+}
+
+.item {
+    fill: #268bd2;
+}
+.item.active {
+    fill: #859900;
+}
