@@ -2,28 +2,28 @@
 jsyaml = require("js-yaml")
 
 function parse(raw) {
-    function itemid(item) { return Object.keys(item)[0] }
-    function itemdata(item) { return item[itemid(item)] }
+    function taskid(task) { return Object.keys(task)[0] }
+    function taskdata(task) { return task[taskid(task)] }
     function notmeta(name) { return name != '_meta' }
-    function notmetaid(item) { return notmeta(itemid(item)) }
+    function notmetaid(task) { return notmeta(taskid(task)) }
     console.groupCollapsed('Parsing data...')
 
     var yaml = jsyaml.safeLoad(raw)
-    var tracks = [], items = {}, links = [], itemsxy = []
+    var tracks = [], tasks = {}, links = []
     Object.keys(yaml).filter(notmeta).forEach(function(trackname, i1) {
         console.group('track "'+trackname+'": #'+i1)
         tracks.push({ x: i1, name: trackname })
-        yaml[trackname].filter(notmetaid).forEach(function(item, i2) {
+        yaml[trackname].filter(notmetaid).forEach(function(task, i2) {
             var d = {
                 x: i1,
                 y: i2/yaml[trackname].length,
                 track: trackname,
-                name: itemid(item),
-                id: trackname+'/'+itemid(item),
-                data: itemdata(item)
+                name: taskid(task),
+                id: trackname+'/'+taskid(task),
+                data: taskdata(task)
             }
-            console.log('item '+d.name+': y = '+d.y+',', d.data)
-            items[d.id] = d
+            console.log('task '+d.name+': y = '+d.y+',', d.data)
+            tasks[d.id] = d
             if (d.data && d.data.depends) {
                 d.data.depends.forEach(function(dep){
                     links.push({ source: d.id, target: dep })
@@ -33,7 +33,7 @@ function parse(raw) {
         console.groupEnd()
     })
     console.groupEnd()
-    return { tracks: tracks, items: items, meta: yaml._meta || {}, links: links }
+    return { tracks: tracks, tasks: tasks, meta: yaml._meta || {}, links: links }
 }
 
 // TODO error handling? :D

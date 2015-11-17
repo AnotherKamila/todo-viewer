@@ -1,11 +1,10 @@
 React    = require("react")
 ReactDOM = require("react-dom")
+clippath = 'url('+require("./tomato.resource.svg")+'_clip)'
 
 var cfg = {
-    // sessionMinutes: 25,
-    // updateInterval: 500
-    sessionMinutes: 0.1,
-    updateInterval: 30
+    sessionMinutes: 25,
+    updateInterval: 500
 }
 
 var Tomato = React.createClass({

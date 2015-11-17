@@ -47,7 +47,7 @@ var TodoViewer = React.createClass({
     },
 
     handleGraphClick: function(e) {
-        if (e.target.classList.contains('item')) {
+        if (e.target.classList.contains('task')) {
             this.setState({ tomatoActive: true })
         }
     },
