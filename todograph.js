@@ -101,10 +101,10 @@ function render(el, data) {
 
     if (data.meta.favicon) {
         g.append("image")
-            .attr("width", 2*cfg.innerRadius)
-            .attr("height", 2*cfg.innerRadius)
-            .attr("x", -cfg.innerRadius)
-            .attr("y", -cfg.innerRadius)
+            .attr("width", 1.6*cfg.innerRadius)
+            .attr("height", 1.6*cfg.innerRadius)
+            .attr("x", -.8*cfg.innerRadius)
+            .attr("y", -.8*cfg.innerRadius)
             .attr("xlink:href", data.meta.favicon)
     }
 }

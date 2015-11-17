@@ -1,0 +1,78 @@
+_meta:
+  favicon: favicon.svg
+
+features:
+  - parse:
+      what: parse this yaml into something d3-friendly
+      done: 2015/11/15
+  - draw:
+      what: Learn d3 by implementing the pretty graph rendering
+      done: 2015/11/16
+  - done-tasks:
+      what: mark the done tasks... and area!
+      done: 2015/11/16
+  - info-tooltip: Add an info tooltip with description and other data.
+  - active: fix how selecting tasks is handled
+  - dependencies: show direction of dependency edges :D
+  - satisfied-deps: show satisfied dependenciy arrows differently
+  - refs:
+      what: hyperlinks for referenced files
+      depends: [ use/how, use/where ]
+  - refs-noreload:
+      what: Load refs on the current page, utilizing history.pushState, instead of forcing a reload
+      depends: [ maintenance/d3update ]
+  - mobile: figure out & implement a working mobile layout
+
+use:
+  - how: how do I want this to work?
+  - privacy: Access control? Some stuff *is* private.
+  - format: This format kinda works and kinda is ugly. Something something.
+  - where: where to host this?
+  - deploy: Actually, yes.
+  - cleandata: cleanup data so that it actually gets parsed; decide on formal grammar
+
+maintenance:
+  - webpack:
+      what: move to webpack => get dependency management and css (and js :D) preprocessors
+      done: 2015/11/17
+  - react:
+      what: Use React to aid in despaghettizing.
+      done: 2015/11/17
+  - naming:
+      what: rename 'item' to 'task' throughout
+      done: 2015/11/17
+  - resources:
+      what: figure out how to include resources such as SVG paths
+      done: 2015/11/17
+  - errorhandling:
+  - production: Production build => smaller bundle file size.
+  - d3update: allow that thing to update instead of needing to re-mount
+  - despaghettize: get rid of the tight coupling among unrelated parts
+  - split: split out independent stuff, e.g. tomato can go to its own repository
+
+tomato:
+  - integrated:
+      what: write a simple sidebar/modal pomodoro thingy...
+      done: 2015/11/16
+  - clippath:
+      what: Understand SVG's clip paths in order to implement a very pretty tomato pie timer.
+      done: 2015/11/16
+  - fix-gone: Fix the sudden disappearance of the red color after the timer is finished.
+  - storedata: store count of completed pomodoro sessions somewhere (localstorage? Google sheets? :D) and display neatly
+  - status: "integrate running tomato with IM status... somehow... WTF :D"
+
+publish:
+  - "favicon!":
+      what: absolutely necessary
+      done: 2015/11/17
+  - readme-use:
+      what: write up how to use
+      depends: [ use/how, use/cleandata ]
+  - readme-deploy:
+      what: write up how to deploy, compile & stuff
+      depends: [ use/how, use/deploy ]
+
+serverside:
+  - think:
+      what: Do I want a non-passive version?
+      depends: [ use/how ]
