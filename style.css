@@ -22,7 +22,7 @@ svg text {
     fill: #93a1a1;
 }
 
-svg {
+#content svg {
     background: url(chaos.gif) bottom right no-repeat;
 }
 
@@ -58,6 +58,7 @@ svg {
 .item.active {
     fill: #dc322f;
     stroke: #dc322f;
+    cursor: pointer;
 }
 
 header blockquote {
@@ -66,4 +67,22 @@ header blockquote {
 }
 .info-name {
     color: #859900;
+}
+
+#tomato-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #002b36;
+    height: 100%;
+}
+#tomato-timer-container {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }

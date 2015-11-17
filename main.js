@@ -1,3 +1,4 @@
+// TODO added zepto => move this crap to that
 window.addEventListener('load', function() {
 function $(id) { return document.getElementById(id) }
 function xy(obj) { return { x: obj.x, y: obj.y } }
@@ -167,6 +168,12 @@ function setupActiveInfo(where, items, infobox) {
     })
 }
 
+function setupTomato(where) {
+    where.addEventListener('click', function(e){
+        if (e.target.classList.contains('item')) tomato.start(function(){}) // TODO beep
+    })
+}
+
 var xhr = new XMLHttpRequest();
 xhr.open('GET', 'example.yml', true);
 xhr.onload = function(e) {
@@ -174,6 +181,7 @@ xhr.onload = function(e) {
     var data = read(rawyaml)
     draw(data, $('content'))
     setupActiveInfo($('content'), data.items, $('active-info'))
+    setupTomato($('content'))
 }
 xhr.send()
 
