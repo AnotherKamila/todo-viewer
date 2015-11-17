@@ -14,7 +14,8 @@ module.exports = {
         loaders: [
             {test: /\.jsx$/, loader: "jsx-loader?insertPragma=React.DOM"},
             {test: /\.sass$/, loaders: ["style", "css?sourceMap", "sass?indentedSyntax,sourceMap"]},
-            {test: /\.(ico|gif|png|jpg|svg)$/, loader: 'url?limit=50000&name=resources/images/[name].[ext]&mimeType=image/[ext]'}
+            {test: /\.svg$/, loader: 'svg-sprite?name=[name]_[hash]'},
+            {test: /\.(ico|gif|png|jpg)$/, loader: 'url?limit=50000&name=resources/images/[name].[ext]&mimeType=image/[ext]'}
         ]
     }
 };

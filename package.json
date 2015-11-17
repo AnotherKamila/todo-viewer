@@ -19,7 +19,8 @@
     "webpack-dev-server": "~1.12.0",
     "zepto": "0.0.4",
     "js-yaml": "~3.4.3",
-    "lodash": "~3.10.1"
+    "lodash": "~3.10.1",
+    "svg-sprite-loader": "0.0.14"
   },
   "repository": {
     "type": "git",
