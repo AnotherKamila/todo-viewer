@@ -1,0 +1,33 @@
+{
+  "name": "todo-viewer",
+  "version": "0.0.1",
+  "url": "https://github.com/AnotherKamila/todo-viewer",
+  "description": "My TODO list is Complicated. This attempts to display it in a reasonable way.",
+  "dependencies": {
+    "css-loader": "~0.23.0",
+    "d3": "~3.5.9",
+    "es6-promise": "~3.0.2",
+    "file-loader": "~0.8.4",
+    "jsx-loader": "~0.13.2",
+    "node-sass": "~3.4.2",
+    "react": "~0.14.2",
+    "react-dom": "~0.14.2",
+    "sass-loader": "~3.1.1",
+    "style-loader": "~0.13.0",
+    "url-loader": "~0.5.6",
+    "webpack": "~1.12.2",
+    "webpack-dev-server": "~1.12.0",
+    "zepto": "0.0.4",
+    "js-yaml": "~3.4.3",
+    "lodash": "~3.10.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AnotherKamila/todo-viewer.git"
+  },
+  "author": "Kamila Součková <kamila@ksp.sk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AnotherKamila/todo-viewer/issues"
+  }
+}
